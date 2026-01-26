@@ -9,4 +9,4 @@ Lab1 = st.Page('hws/hw1.py',
 
 pg = st.navigation ( [Lab1])
 st.set_page_config(page_title='Lab Manager')
-pg. run ()
+pg.run()
