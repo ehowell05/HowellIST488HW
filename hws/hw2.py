@@ -46,6 +46,7 @@ uploaded_link = st.text_input("Enter a URL")
 if uploaded_link:
 
     document = read_url_content(uploaded_link)
+    prompt = f"Here is a document:\n{document}\n\nSummarize this document {add_sum_sbox}. Respond in {add_lang_sbox}."
 
     if add_LLM_sbox == "ChatGPT":
         if add_model_checkbox:
@@ -53,25 +54,29 @@ if uploaded_link:
         else:
             model_check = "gpt-5-nano"
         response = openAI_client.responses.create(
-        model=model_check,
-        input=f"Here is a document:\n{document}\n\nSummarize this document {add_sum_sbox}. Respond in {add_lang_sbox}.",
-        stream=True,
-    )
+            model=model_check,
+            input=prompt,
+            stream=True,
+        )
+
+        def stream_text():
+            for event in response:
+                if event.type == "response.output_text.delta":
+                    yield event.delta
+
+        st.write_stream(stream_text())
+
     else:
         if add_model_checkbox:
             model_check = "claude-sonnet-4-5-20250929"
         else:
             model_check = "claude-haiku-4-5-20251001"
-        response = anthropic_client.messages.create(
+        
+        with anthropic_client.messages.stream(
             model=model_check,
-            input=f"Here is a document:\n{document}\n\nSummarize this document {add_sum_sbox}. Respond in {add_lang_sbox}.",
-            stream=True,
-        )
-
-
-    def stream_text():
-        for event in response:
-            if event.type == "response.output_text.delta":
-                yield event.delta
-
-    st.write_stream(stream_text())
+            max_tokens=1024,
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        ) as stream:
+            st.write_stream(stream.text_stream)
