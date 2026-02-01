@@ -11,6 +11,7 @@ st.write(
 )
 st.sidebar.title("HW 2 Settings")
 add_sum_sbox = st.sidebar.selectbox("Which kind of summary would you like to use?", ["in 100 Words", "in 2 Paragraphs", "in 5 Bullet Points"])
+add_lang_sbox = st.sidebar.selectbox("Output language", ["English", "French", "Spanish"])
 add_model_checkbox = st.sidebar.checkbox("Would you like to use the stonger model?", value = False)
 
 
@@ -53,7 +54,7 @@ if uploaded_link:
 
     response = client.responses.create(
         model=model_check,
-        input=f"Here is a document:\n{document}\n\nQuestion: {add_sum_sbox}",
+        input=f"Here is a document:\n{document}\n\nSummarize this document {add_sum_sbox}. Respond in {add_lang_sbox}.",
         stream=True,
     )
 
