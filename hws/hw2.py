@@ -34,7 +34,7 @@ openai_api_key = st.secrets.EddieOpenAPIKey
 claude_api_key = st.secrets.EddieClaudeAPIKey
 
 
-anthropic_client = anthropic.Anthropic(api_key=claude_api_key)
+anthropic_client = Anthropic(api_key=claude_api_key)
 openAI_client = OpenAI(api_key=openai_api_key)
 
 
