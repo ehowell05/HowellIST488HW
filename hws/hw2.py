@@ -62,7 +62,7 @@ if uploaded_link:
             model_check = "claude-sonnet-4-5-20250929"
         else:
             model_check = "claude-haiku-4-5-20251001"
-        response = anthropic_client.responses.create(
+        response = anthropic_client.messages.create(
             model=model_check,
             input=f"Here is a document:\n{document}\n\nSummarize this document {add_sum_sbox}. Respond in {add_lang_sbox}.",
             stream=True,
