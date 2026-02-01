@@ -3,7 +3,7 @@ from openai import OpenAI
 from pypdf import PdfReader
 from bs4 import BeautifulSoup
 import requests
-import anthropic
+from anthropic import Anthropic
 
 # Show title and description.
 st.title("HW 2")
