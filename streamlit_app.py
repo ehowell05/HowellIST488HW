@@ -12,6 +12,12 @@ Lab2 = st.Page('hws/hw2.py',
     url_path = None,
     default = False)
 
-pg = st.navigation ([Lab1,Lab2])
+Lab3 = st.Page('hws/hw3.py',
+    title = "HW 3",
+    icon = "📄",
+    url_path = None,
+    default = True)
+
+pg = st.navigation ([Lab3,Lab2,Lab1])
 st.set_page_config(page_title='Lab Manager')
 pg.run()
