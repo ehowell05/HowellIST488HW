@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from openai import OpenAI
 from anthropic import Anthropic
 
-st.title("HW3: Streaming Chatbot with URL Context")
+st.title("HW3: Chatbot with URL Context")
 
 st.write(
     """
