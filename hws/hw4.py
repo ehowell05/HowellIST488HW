@@ -159,7 +159,9 @@ Guidelines:
 - If your answer comes from a specific document, cite the source clearly (e.g., "According to [Organization Name]...")
 - If the documents don't contain relevant information, say "I don't have information about that in my knowledge base"
 - Be friendly and helpful to students looking for organization information
-- Keep responses concise but informative"""
+- Keep responses concise but informative
+- Do NOT make any links IN GERNERAL
+"""
 
     rag_context = f"""
 Relevant Documentation:
