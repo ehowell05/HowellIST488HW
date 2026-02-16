@@ -8,19 +8,19 @@ Lab1 = st.Page('hws/hw1.py',
 
 Lab2 = st.Page('hws/hw2.py',
     title = "HW 2",
-    icon = "📄",
+    icon = "🧫",
     url_path = None,
     default = False)
 
 Lab3 = st.Page('hws/hw3.py',
     title = "HW 3",
-    icon = "📄",
+    icon = "🔭",
     url_path = None,
     default = False)
 
 Lab4 = st.Page('hws/hw4.py',
     title = "HW 4",
-    icon = "📄",
+    icon = "🧬",
     url_path = None,
     default = True)
 
