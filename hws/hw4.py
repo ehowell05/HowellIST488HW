@@ -124,7 +124,7 @@ def query_vector_db(collection, query, n_results=3):
     return results
 
 
-def build_context_from_results(results):
+def result_context(results):
     context = ""
     retrieved_docs = results["documents"][0]
     retrieved_metadatas = results["metadatas"][0]
@@ -136,11 +136,7 @@ def build_context_from_results(results):
     return context
 
 
-def get_conversation_context():
-    """
-    Build conversation context from the last 5 interactions.
-    This creates a memory buffer for the chatbot.
-    """
+def convo_context():
     history = st.session_state.conversation_history[-5:]  
     
     messages = []
@@ -174,7 +170,7 @@ Use the above documentation to answer the user's question. Cite sources when app
     
     messages = [{"role": "system", "content": system_prompt}]
     
-    messages.extend(get_conversation_context())
+    messages.extend(convo_context())
     
     messages.append({"role": "user", "content": f"{rag_context}\n\nQuestion: {query}"})
     
@@ -220,7 +216,7 @@ if prompt := st.chat_input("Ask about student organizations..."):
         with st.spinner("Searching and thinking..."):
 
             results = query_vector_db(collection, prompt)
-            context = build_context_from_results(results)
+            context = result_context(results)
             
 
             response = generate_response(prompt, context)
