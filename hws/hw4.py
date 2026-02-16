@@ -151,7 +151,7 @@ def generate_response(query, context):
     """Generate a response using the LLM with RAG context and conversation memory."""
     client = st.session_state.openai_client
     
-    system_prompt = """You are a helpful iSchool Student Organizations assistant chatbot. 
+    system_prompt = """You are a helpful Syracuse Student Organizations assistant chatbot. 
 Your role is to answer questions about student organizations at the Syracuse University iSchool.
 
 Guidelines:
@@ -192,7 +192,7 @@ collection = st.session_state.HW4_VectorDB
 
 st.sidebar.header("About")
 st.sidebar.info("""
-This chatbot uses RAG (Retrieval-Augmented Generation) to answer questions about iSchool student organizations.
+This chatbot uses RAG (Retrieval-Augmented Generation) to answer questions about Syracuse University student organizations.
 
 **Features:**
 - Searches through organization documentation
