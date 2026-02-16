@@ -4,7 +4,7 @@ import chromadb
 from pathlib import Path
 from bs4 import BeautifulSoup
 
-st.title("iSchool Student Organizations Chatbot")
+st.title("Syracuse University Student Organizations Chatbot")
 
 
 if "openai_client" not in st.session_state:
