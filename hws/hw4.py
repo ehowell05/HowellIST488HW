@@ -84,7 +84,7 @@ def initialize_vector_db():
         st.sidebar.success(f"Vector DB loaded with {collection.count()} chunks")
         return collection
     
-    folder_path = "data/HW-04-Data" 
+    folder_path = "data/HW-04-Data/su_orgs" 
     html_files = list(Path(folder_path).glob("*.html"))
     
     if not html_files:
