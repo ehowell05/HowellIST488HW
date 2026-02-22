@@ -5,8 +5,6 @@ import json
 from pathlib import Path
 from bs4 import BeautifulSoup
 
-st.title("Syracuse University Student Organizations Chatbot (HW5)")
-
 if "openai_client" not in st.session_state:
     st.session_state.openai_client = OpenAI(api_key=st.secrets["EddieOpenAPIKey"])
 
@@ -59,41 +57,22 @@ def add_chunks_to_collection(collection, chunks):
 
 
 def initialize_vector_db():
-    db_path = "./ChromaDB_for_HW4"
-    chroma_client = chromadb.PersistentClient(path=db_path)
+    chroma_client = chromadb.PersistentClient(path="./ChromaDB_for_HW4")
     collection = chroma_client.get_or_create_collection("StudentOrgsCollection")
 
     if collection.count() > 0:
-        st.sidebar.success(f"Vector DB loaded with {collection.count()} chunks")
         return collection
 
-    folder_path = "data/HW-04-Data/su_orgs"
-    html_files = list(Path(folder_path).glob("*.html"))
-
-    if not html_files:
-        st.error(f"No HTML files found in {folder_path}.")
-        return collection
-
-    progress_bar = st.sidebar.progress(0)
-    status_text = st.sidebar.empty()
-
-    for i, file in enumerate(html_files):
-        status_text.text(f"Processing: {file.name}")
+    html_files = list(Path("data/HW-04-Data/su_orgs").glob("*.html"))
+    for file in html_files:
         text = extract_text_from_html(file)
         chunks = chunk_document(text, file.name)
         add_chunks_to_collection(collection, chunks)
-        progress_bar.progress((i + 1) / len(html_files))
 
-    status_text.text(f"Indexed {len(html_files)} files ({collection.count()} chunks)")
-    progress_bar.empty()
     return collection
 
 
 def relevant_club_info(query: str, n_results: int = 3) -> str:
-    """
-    Performs a vector search in ChromaDB for the given query and returns
-    the relevant document chunks with their source filenames.
-    """
     client = st.session_state.openai_client
     collection = st.session_state.HW5_VectorDB
 
@@ -184,7 +163,7 @@ def generate_response(user_query: str) -> str:
     response_message = response.choices[0].message
 
     if response_message.tool_calls:
-        messages.append(response_message) 
+        messages.append(response_message)
 
         for tool_call in response_message.tool_calls:
             if tool_call.function.name == "relevant_club_info":
@@ -193,7 +172,6 @@ def generate_response(user_query: str) -> str:
                     query=args.get("query", user_query),
                     n_results=args.get("n_results", 3)
                 )
-
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tool_call.id,
@@ -210,21 +188,7 @@ def generate_response(user_query: str) -> str:
 
 
 if "HW5_VectorDB" not in st.session_state:
-    with st.spinner("Initializing vector database..."):
-        st.session_state.HW5_VectorDB = initialize_vector_db()
-
-
-st.sidebar.header("About")
-st.sidebar.info(
-    "This chatbot uses RAG with OpenAI Function Calling to answer questions "
-    "about Syracuse University iSchool student organizations.\n\n"
-    "Features:\n"
-    "- Function calling (LLM decides when to search)\n"
-    "- ChromaDB vector search\n"
-    "- Short-term memory (last 5 exchanges)\n"
-    "- Source citations in responses"
-)
-
+    st.session_state.HW5_VectorDB = initialize_vector_db()
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -236,9 +200,8 @@ if prompt := st.chat_input("Ask about student organizations..."):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            response = generate_response(prompt)
-            st.markdown(response)
+        response = generate_response(prompt)
+        st.markdown(response)
 
     st.session_state.messages.append({"role": "assistant", "content": response})
     st.session_state.conversation_history.append({
