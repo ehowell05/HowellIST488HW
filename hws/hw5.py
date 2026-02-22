@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from bs4 import BeautifulSoup
 
+st.title("HW 5: SU Org Search")
+
 if "openai_client" not in st.session_state:
     st.session_state.openai_client = OpenAI(api_key=st.secrets["EddieOpenAPIKey"])
 
